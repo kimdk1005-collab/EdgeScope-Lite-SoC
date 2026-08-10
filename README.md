@@ -14,9 +14,9 @@
 </p>
 
 <p>
-  <img src="./assets/gui_capture.png" width="53%" align="top" alt="EdgeScope-Lite Live Capture GUI">
+  <img src="./assets/gui_capture.png" width="55%" align="top" alt="EdgeScope-Lite Live Capture GUI">
   &nbsp;
-  <img src="./assets/basys3_board.png" width="43%" align="top" alt="Basys3 Artix-7 Target Board">
+  <img src="./assets/basys3_board.png" width="40%" align="top" alt="Basys3 Artix-7 Target Board">
 </p>
 
 <sub>
