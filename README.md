@@ -14,12 +14,15 @@
 </p>
 
 <p>
-  <img src="./assets/gui_capture.png" width="55%" align="top" alt="EdgeScope-Lite Capture GUI">
+  <img src="./assets/gui_capture.png" width="53%" align="top" alt="EdgeScope-Lite Live Capture GUI">
   &nbsp;
-  <img src="./assets/basys3_board.png" width="41%" align="top" alt="EdgeScope-Lite on Basys3">
+  <img src="./assets/basys3_board.png" width="43%" align="top" alt="Basys3 Artix-7 Target Board">
 </p>
 
-<sub>왼쪽 — 8채널 트리거 캡처 GUI &nbsp;·&nbsp; 오른쪽 — Basys3 (Artix-7) 타깃 보드</sub>
+<sub>
+왼쪽 — Basys3 실측 캡처 화면 · <code>LIVE</code> UART · Pattern 트리거 · <code>CAPTURE VALID</code> 전 항목 PASS<br>
+오른쪽 — Basys3 (Artix-7 XC7A35T) 타깃 보드
+</sub>
 
 **Basys3(Artix-7) 위에 직접 설계한 Custom IP 3종으로, CPU 개입 없이 100 MHz 등간격 8채널 샘플링과 트리거 중심 1,024 샘플 캡처를 구현한 SoC 프로젝트입니다.**
 
@@ -354,7 +357,17 @@ ILA가 더 무거운 것은 자연스러운 결과입니다. ILA는 범용 디�
 > ℹ️ A(CPU Polling)는 전용 캡처 하드웨어가 없는 소프트웨어 기준군이므로 기능이 동등하지 않습니다. **절감률은 B와 C 사이에서만** 이야기합니다.
 > A를 baseline으로 차감한 순수 애널라이저 비용(슬라이스 124 vs 604 등)은 발표 시점 잠정값이며 공식 판정은 `PENDING_CUSTOM` 상태입니다.
 
-Python GUI([`scripts/cpu_polling_gui.py`](./scripts/cpu_polling_gui.py))에서 A/B/C 파형·처리량·구현 결과를 나란히 비교할 수 있습니다. 상단 헤더 이미지가 해당 화면이며, 보드가 연결되지 않은 상태에서는 `DEMO · 예상` 배지가 붙은 예상값이 표시됩니다.
+Python GUI([`scripts/cpu_polling_gui.py`](./scripts/cpu_polling_gui.py))에서 A/B/C 파형·처리량·구현 결과를 나란히 비교할 수 있습니다. 상단 헤더 왼쪽이 Basys3를 `/dev/ttyUSB1`로 연결한 **실측(`LIVE` UART) 캡처 화면**이며, 다음 항목이 GUI에서 자동 검증됩니다.
+
+| 검증 항목 | 실측 결과 |
+|---|---|
+| SAMPLES | 1,024 / 1,024 ✅ PASS |
+| TRIGGER | Index 512 ✅ PASS |
+| CONDITION | `Sample[512] = 0xA5` · Pattern `0xA?` · Mask `0xF0` · MATCH ✅ PASS |
+| ENTRY EDGE | `Sample[511] = 0x95` · masked `0x90 != 0xA0` ✅ PASS |
+| SAMPLE RATE | 100.00 MS/s · divider 1 ✅ PASS |
+
+물리 주소는 `START 789 · TRIGGER 277 · WRITE 788`로, 링버퍼 재정렬 후 트리거가 논리 인덱스 512에 오는 것을 보여줍니다. 보드가 연결되지 않은 상태에서는 `DEMO · 예상` 배지가 붙은 예상값이 표시되며 실측값이 아닙니다.
 
 ---
 
