@@ -14,8 +14,12 @@
 </p>
 
 <p>
-  <img src="./assets/basys3_board.png" width="88%" alt="EdgeScope-Lite on Basys3">
+  <img src="./assets/gui_capture.png" width="55%" align="top" alt="EdgeScope-Lite Capture GUI">
+  &nbsp;
+  <img src="./assets/basys3_board.png" width="41%" align="top" alt="EdgeScope-Lite on Basys3">
 </p>
+
+<sub>왼쪽 — 8채널 트리거 캡처 GUI &nbsp;·&nbsp; 오른쪽 — Basys3 (Artix-7) 타깃 보드</sub>
 
 **Basys3(Artix-7) 위에 직접 설계한 Custom IP 3종으로, CPU 개입 없이 100 MHz 등간격 8채널 샘플링과 트리거 중심 1,024 샘플 캡처를 구현한 SoC 프로젝트입니다.**
 
@@ -350,16 +354,7 @@ ILA가 더 무거운 것은 자연스러운 결과입니다. ILA는 범용 디�
 > ℹ️ A(CPU Polling)는 전용 캡처 하드웨어가 없는 소프트웨어 기준군이므로 기능이 동등하지 않습니다. **절감률은 B와 C 사이에서만** 이야기합니다.
 > A를 baseline으로 차감한 순수 애널라이저 비용(슬라이스 124 vs 604 등)은 발표 시점 잠정값이며 공식 판정은 `PENDING_CUSTOM` 상태입니다.
 
-<p align="center">
-  <img src="./assets/abc_gui_demo.png" width="92%" alt="A/B/C Comparison GUI">
-</p>
-
-<p align="center">
-  <sub>
-    Python GUI에서 A/B/C 파형·처리량·구현 결과를 나란히 비교 · 보드 미연결 시 데모 모드 화면<br>
-    <code>DEMO · 예상</code> 배지가 붙은 값은 실측이 아닙니다
-  </sub>
-</p>
+Python GUI([`scripts/cpu_polling_gui.py`](./scripts/cpu_polling_gui.py))에서 A/B/C 파형·처리량·구현 결과를 나란히 비교할 수 있습니다. 상단 헤더 이미지가 해당 화면이며, 보드가 연결되지 않은 상태에서는 `DEMO · 예상` 배지가 붙은 예상값이 표시됩니다.
 
 ---
 
