@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>Conclusion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="slide">
+  <div class="deco" data-seed="151" data-side="right"></div>
+  <div class="topright">EdgeScope-Lite / SoC Project</div>
+
+  <div class="head tight">
+    <div class="eyebrow">05 <b>결과 및 결론</b> · Conclusion</div>
+    <h1>Conclusion</h1>
+    <div class="sub">MCU Polling으로는 놓치던 짧은 Pulse와 동시 이벤트를, FPGA Hardware Capture로 결정론적으로 보존했다.</div>
+  </div>
+
+  <div class="body">
+    <div class="card" style="flex:1">
+      <div class="card-title" style="font-size:24px">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M12 2l2.9 6.2 6.6.9-4.8 4.7 1.2 6.7L12 17.4 6.1 20.5l1.2-6.7L2.5 9.1l6.6-.9L12 2z"/>
+        </svg>
+        Achieved<small>설계 · 구현</small>
+      </div>
+      <div class="rule"></div>
+      <ul class="spec">
+        <li>Frozen <b class="k">v2.1</b> 공통 명세 아래 <b>Probe Sampler · Basic Trigger Engine · Circular Trace Buffer</b> 3개 Custom IP를 설계하고 AXI4-Lite IP로 패키징</li>
+        <li>MicroBlaze V Base SoC에 통합해 <b>XSA · Bitstream · Release ELF · Bootable Bitstream</b>까지 생성</li>
+        <li>Trigger 전 <b>512</b> / Trigger 포함 후 <b>512</b>, Logical index <b>512</b> 캡처 계약을 하드웨어 FSM으로 구현</li>
+        <li>CPU는 <b>설정과 결과 read</b>만 담당 — 실시간 Sampling·Trigger 판정은 전부 FPGA</li>
+        <li>동일 Base SoC · Generator 위에 <b>A / B / C 3개 비교군</b>을 재현 가능한 스크립트로 구축</li>
+      </ul>
+    </div>
+
+    <div class="card mag" style="flex:1">
+      <div class="card-title" style="font-size:24px">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M12 2l8 4v6c0 5-3.4 8.6-8 10-4.6-1.4-8-5-8-10V6l8-4z"/><path d="M8.6 12l2.4 2.4L15.8 9.6"/>
+        </svg>
+        Verified<small>검증 결과</small>
+      </div>
+      <div class="rule"></div>
+      <ul class="spec">
+        <li>회귀 테스트 <b>7 SystemVerilog TB + C <span class="mono">_Static_assert</span></b> 전부 <b class="k">PASS</b></li>
+        <li>Trigger 경계 <b>physical 0 · 1 · 1022 · 1023</b> wrap-around 순서 PASS</li>
+        <li>Packaged IP / Block Design validation PASS, propagated BRAM depth <b>1024</b> 자동 assert</li>
+        <li>100 MHz Timing Closure — <b>WNS +0.832 ns</b>, TNS <b>0.000 ns</b>, failing endpoint <b>0 / 9,845</b></li>
+        <li>Bitstream <b>DRC error 0</b>, capture <span class="mono">RAMB36E1</span> 정확히 1개</li>
+        <li>감사에서 발견한 <b>P0 · P1 · P2 결함 8건</b>을 모두 수정하고 재검증</li>
+      </ul>
+    </div>
+
+    <div class="card vio" style="flex:1">
+      <div class="card-title" style="font-size:24px">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <path d="M5 12h14M13 6l6 6-6 6"/>
+        </svg>
+        Next<small>한계 · 향후 과제</small>
+      </div>
+      <div class="rule"></div>
+      <ul class="spec">
+        <li>현재 <b>보드 실측이 확보된 비교군은 A</b>뿐 — <span class="mono">1,666,666 obs/s</span>, 10 ns·100 ns pulse <b>0/10</b>, 1 µs 이상 <b>10/10</b></li>
+        <li>Design <b>B</b>의 Basys3 UART 원본 로그를 확보해 Pulse 검출률을 실측으로 대체</li>
+        <li><b>Pattern hold · Pulse Stress</b> 시나리오 보드 검증</li>
+        <li>완료 처리를 <span class="mono">STATUS.DONE</span> polling에서 <b><span class="mono">irq_o</span> 기반 interrupt</b>로 전환</li>
+        <li><b>채널 수 · Capture depth 확장</b>, multi-level / sequential trigger 지원</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="strip" style="padding:20px 26px; font-size:22px; justify-content:space-between">
+    <span><b style="color:var(--cyan)">8 ch</b> Parallel</span>
+    <span class="sep">·</span>
+    <span><b style="color:var(--cyan)">100 MS/s</b> Max</span>
+    <span class="sep">·</span>
+    <span><b style="color:var(--cyan)">1,024</b> Samples</span>
+    <span class="sep">·</span>
+    <span><b style="color:var(--cyan)">512 : 512</b> Pre / Post</span>
+    <span class="sep">·</span>
+    <span><b style="color:var(--cyan)">4 KiB</b> Capture Memory</span>
+    <span class="sep">·</span>
+    <span><b style="color:var(--cyan)">0</b> DSP48</span>
+    <span class="sep">·</span>
+    <span><b style="color:var(--green)">WNS +0.832 ns</b></span>
+  </div>
+
+  <div class="pnum">16</div>
+</div>
+<script src="deco.js"></script>
+</body>
+</html>

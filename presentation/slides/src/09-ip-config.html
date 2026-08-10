@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>IP Configuration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="slide">
+  <div class="deco" data-seed="44" data-side="right"></div>
+  <div class="topright">EdgeScope-Lite / SoC Project</div>
+
+  <div class="head tight">
+    <div class="eyebrow">02 <b>System Architecture</b> · IP Config.</div>
+    <h1>IP Configuration</h1>
+    <div class="sub">3 Custom IP + 9 Xilinx IP · Frozen Common Specification v2.1</div>
+  </div>
+
+  <div class="body" style="flex-direction:column">
+    <!-- Custom IP -->
+    <div class="card">
+      <div class="card-title">
+        <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M10 3v4M14 3v4M10 17v4M14 17v4M3 10h4M3 14h4M17 10h4M17 14h4"/>
+        </svg>
+        CUSTOM IP — <span style="color:#fff">user.org : user : *</span> : 1.0<small>AXI4-Lite Slave · 32-bit data / 6-bit addr</small>
+      </div>
+      <div class="rule"></div>
+      <table class="t dense">
+        <thead><tr>
+          <th style="width:250px">IP</th><th style="width:250px">VLNV Name</th><th style="width:150px">CSR Base</th>
+          <th style="width:120px">Registers</th><th>Extra Interface</th><th style="width:130px">Owner</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td class="cy hi">Probe Sampler</td>
+            <td class="mono">probe_sampler</td>
+            <td class="mono">0x4001_0000</td>
+            <td class="c">4 × 32-bit</td>
+            <td>probe_i[7:0] → sample_data_o[7:0] · sample_valid_o</td>
+            <td>국승호</td>
+          </tr>
+          <tr>
+            <td class="cy hi">Basic Trigger Engine</td>
+            <td class="mono">basic_trigger_engine</td>
+            <td class="mono">0x4002_0000</td>
+            <td class="c">5 × 32-bit</td>
+            <td>sample_data_i / valid_i → trigger_pulse_o</td>
+            <td>김도근</td>
+          </tr>
+          <tr>
+            <td class="cy hi">Circular Trace Buffer</td>
+            <td class="mono">circular_trace_buffer</td>
+            <td class="mono">0x4003_0000</td>
+            <td class="c">6 × 32-bit</td>
+            <td><span class="mono">BRAM_PORTA</span> Master (4,096 B) · <span class="mono">irq_o</span> LEVEL_HIGH</td>
+            <td>윤형욱</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="row grow" style="margin-top:26px">
+      <!-- Xilinx IP -->
+      <div class="card mag" style="flex:1.35">
+        <div class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <path d="M3 7l9-4 9 4-9 4-9-4z"/><path d="M3 12l9 4 9-4M3 17l9 4 9-4"/>
+          </svg>
+          XILINX IP INVENTORY<small>Vivado 2024.2</small>
+        </div>
+        <div class="rule"></div>
+        <table class="t micro">
+          <thead><tr><th>IP Core</th><th style="width:110px">Version</th><th>Configuration</th></tr></thead>
+          <tbody>
+            <tr><td class="hi">MicroBlaze V</td><td class="mono">1.0</td><td>RISC-V, 128 KiB LMB, no cache, MDM</td></tr>
+            <tr><td class="hi">Clocking Wizard</td><td class="mono">6.0</td><td>MMCM, 100 MHz in → 100 MHz out</td></tr>
+            <tr><td class="hi">AXI Interconnect</td><td class="mono">2.1</td><td>NUM_MI = 8</td></tr>
+            <tr><td class="hi">AXI UARTLite</td><td class="mono">2.0</td><td>9600 baud, 8 data bits, no parity</td></tr>
+            <tr><td class="hi">AXI Timer</td><td class="mono">2.0</td><td>COUNT_WIDTH 32, timer2 enabled</td></tr>
+            <tr><td class="hi">AXI GPIO</td><td class="mono">2.0</td><td>dual, 26-bit out / 2-bit in</td></tr>
+            <tr><td class="hi">AXI INTC</td><td class="mono">4.1</td><td>3 interrupt inputs (concat)</td></tr>
+            <tr><td class="hi">Block Memory Generator</td><td class="mono">8.4</td><td>True Dual Port, 32 b × 1,024, byte WE</td></tr>
+            <tr><td class="hi">AXI BRAM Controller</td><td class="mono">4.1</td><td>DATA_WIDTH 32, Single Port</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- CSR convention -->
+      <div class="card vio" style="flex:1">
+        <div class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h4M7 12h6M7 15h3M16 9v6"/>
+          </svg>
+          COMMON CSR CONVENTION
+        </div>
+        <div class="rule"></div>
+        <ul class="spec">
+          <li><b>AXI4-Lite</b> 32-bit data, 6-bit local byte address, 모든 offset 4-byte aligned</li>
+          <li><b class="k">W1P</b> (Write-One-Pulse) register는 write transaction에서만 1-clock pulse를 만들고 <b>read = 0</b></li>
+          <li><b>Reserved bit</b>는 write 시 무시, read 시 <b>0</b> 반환</li>
+          <li>세 IP 모두 <span class="mono">s_axi_aclk</span> = 100 MHz, <span class="mono">s_axi_aresetn</span> = sync active-low</li>
+          <li><b>Naming</b> — module <span class="mono">lower_snake_case</span>, port <span class="mono">_i / _o / _ni</span>, param <span class="mono">UPPER_SNAKE</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip" style="font-size:19px">
+    <span class="tag">Interface Metadata</span>
+    <span>packaged <b>BRAM_PORTA</b> = <span class="mono">BYTE_ADDRESS · MEM_WIDTH=32 · MEM_SIZE=4096</span> 고정 — 기본값 8192를 두면 Block Automation이 BMG depth를 2048로 바꾼다.</span>
+  </div>
+
+  <div class="pnum">09</div>
+</div>
+<script src="deco.js"></script>
+</body>
+</html>

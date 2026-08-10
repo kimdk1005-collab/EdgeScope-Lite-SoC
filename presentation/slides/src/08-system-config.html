@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>System Configuration</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Poppins:wght@600;700;800&family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body>
+<div class="slide">
+  <div class="deco" data-seed="31" data-side="right"></div>
+  <div class="topright">EdgeScope-Lite / SoC Project</div>
+
+  <div class="head">
+    <div class="eyebrow">02 <b>System Architecture</b> · System Config.</div>
+    <h1>System Configuration</h1>
+    <div class="sub">MicroBlaze V Base SoC Platform · Single 100 MHz Clock Domain</div>
+  </div>
+
+  <div class="body">
+    <!-- LEFT : platform -->
+    <div class="col" style="flex:0 0 500px">
+      <div class="card grow">
+        <div class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="6" y="6" width="12" height="12" rx="2"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>
+          </svg>
+          PLATFORM
+        </div>
+        <div class="rule"></div>
+        <div class="kv">
+          <div class="r"><span class="n">FPGA Board</span><span class="v">Digilent Basys3</span></div>
+          <div class="r"><span class="n">Device</span><span class="v mono">xc7a35tcpg236-1</span></div>
+          <div class="r"><span class="n">Soft Core</span><span class="v">MicroBlaze V <em>(RISC-V)</em></span></div>
+          <div class="r"><span class="n">Local Memory</span><span class="v">128 KiB LMB · Cache None</span></div>
+          <div class="r"><span class="n">Clocking</span><span class="v">clk_wiz MMCM · <em>100 MHz</em></span></div>
+          <div class="r"><span class="n">Reset</span><span class="v">Sync. active-low <span class="mono">rst_ni</span></span></div>
+          <div class="r"><span class="n">Debug</span><span class="v">MDM · AXI INTC (3 IRQ)</span></div>
+          <div class="r"><span class="n">Toolchain</span><span class="v">Vivado / Vitis <em>2024.2</em></span></div>
+          <div class="r"><span class="n">HDL · SW</span><span class="v">SystemVerilog · C (Release <span class="mono">-O2</span>)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER : address map -->
+    <div class="col grow">
+      <div class="card mag grow">
+        <div class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14.5h18M8.5 4v16"/>
+          </svg>
+          AXI4-LITE ADDRESS MAP<small>MicroBlaze V / Data</small>
+        </div>
+        <div class="rule"></div>
+        <table class="t dense">
+          <thead><tr><th>Region</th><th>Base Address</th><th style="text-align:right">Range</th></tr></thead>
+          <tbody>
+            <tr><td>MicroBlaze Local Memory</td><td class="mono">0x0000_0000</td><td class="n">128 KiB</td></tr>
+            <tr><td>Test Pattern Generator GPIO</td><td class="mono">0x4000_0000</td><td class="n">64 KiB</td></tr>
+            <tr><td class="hi">Probe Sampler CSR</td><td class="mono mg">0x4001_0000</td><td class="n">4 KiB</td></tr>
+            <tr><td class="hi">Basic Trigger Engine CSR</td><td class="mono mg">0x4002_0000</td><td class="n">4 KiB</td></tr>
+            <tr><td class="hi">Circular Trace Buffer CSR</td><td class="mono mg">0x4003_0000</td><td class="n">4 KiB</td></tr>
+            <tr><td>AXI UARTLite</td><td class="mono">0x4060_0000</td><td class="n">64 KiB</td></tr>
+            <tr><td>AXI INTC</td><td class="mono">0x4120_0000</td><td class="n">64 KiB</td></tr>
+            <tr><td>AXI Timer</td><td class="mono">0x41C0_0000</td><td class="n">64 KiB</td></tr>
+            <tr><td class="hi">Capture BRAM (Port B)</td><td class="mono mg">0x4200_0000</td><td class="n">4 KiB</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RIGHT : peripherals -->
+    <div class="col" style="flex:0 0 470px">
+      <div class="card vio grow">
+        <div class="card-title">
+          <svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+            <circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l2.8 2.8M16.2 16.2L19 19M19 5l-2.8 2.8M7.8 16.2L5 19"/>
+          </svg>
+          PERIPHERAL CONFIG
+        </div>
+        <div class="rule"></div>
+        <ul class="spec">
+          <li><b>AXI Interconnect</b> — <span class="k">NUM_MI = 8</span> (Base 4 + Custom 4)</li>
+          <li><b>AXI UARTLite 2.0</b> — 9600 baud, 8-N-1, IRQ <span class="mono">In0</span></li>
+          <li><b>AXI Timer 2.0</b> — 32-bit × 2, IRQ <span class="mono">In1</span></li>
+          <li><b>AXI GPIO 2.0</b> — 26-bit out / 2-bit in (Generator)</li>
+          <li><b>Trace <span class="mono">irq_o</span></b> — INTC <span class="mono">In2</span>, LEVEL_HIGH</li>
+          <li><b>AXI BRAM Controller 4.1</b> — 32-bit, Single Port</li>
+          <li><b>Blk Memory Gen 8.4</b> — True Dual Port, 1,024 × 32-bit</li>
+        </ul>
+        <div class="metrics" style="margin-top:auto; padding-top:20px">
+          <div class="metric"><div class="lbl">Clock Domain</div><div class="val cy">1</div></div>
+          <div class="metric"><div class="lbl">AXI Slaves</div><div class="val vi">8</div></div>
+          <div class="metric"><div class="lbl">Interrupts</div><div class="val mg">3</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="strip">
+    <span class="tag">Design Rule</span>
+    <span>모든 IP와 BRAM은 동일한 <b>100 MHz</b> clock을 사용하고, reset은 <b>synchronous active-low</b>로 통일한다.</span>
+    <span class="sep">|</span>
+    <span>CSR은 <b>32-bit data · 6-bit local byte address</b>, 모든 offset은 4-byte aligned.</span>
+  </div>
+
+  <div class="pnum">08</div>
+</div>
+<script src="deco.js"></script>
+</body>
+</html>
